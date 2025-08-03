@@ -19,6 +19,8 @@ class BodyFrame(ABC):
         # Combobox 리스트 => 우선순위 담는데 사용
         self.combo_list = []
 
+        # self.data =
+
     def build_question_section(self, question):
         question_box = wx.StaticBox(self.body_panel)
         question_sizer = wx.StaticBoxSizer(question_box, wx.VERTICAL)

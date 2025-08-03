@@ -8,6 +8,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from form.form_data import FormData
 from form.prior_item import PriorItem
 from form.qa_item import QAItem
+from manager.cache_manager import CacheManager
 from manager.prep_manager import PrepManager
 from manager.task_manager import TaskManager
 from utils.answer_type import AnswerType
@@ -55,6 +56,9 @@ class MainFrame(wx.Frame):
 
         # TaskManager
         self.task_manager = TaskManager()
+
+        # CacheManager
+        self.cache_manager = CacheManager()
 
         # QAItems
         self.qa_items = QAItem()
@@ -396,7 +400,8 @@ class MainFrame(wx.Frame):
         
         # prior_items에 현재 우선순위 저장
         self.prior_items.add_prior_list(self.body_list[self.index].save_prior_list())
-        
+        # 수정
+        self.cache_manager.save_data_internal(self.index, self.body_list[self.index].save_prior_list())
         self.index += 1
 
         # 수정

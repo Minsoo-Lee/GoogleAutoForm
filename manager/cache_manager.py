@@ -1,3 +1,4 @@
+import json
 import time
 import traceback
 
@@ -20,13 +21,14 @@ class CacheManager:
         if CacheManager._initialized:
             return  # 이미 초기화된 경우, 바로 리턴
 
-        self.cache_data = []
+        self.cache_data = {}
 
         CacheManager._initialized = True
 
     def save_data_internal(self, index, data):
-        pass
+        self.cache_data[index] = data
 
     def download_data_to_external(self):
-        pass
+        with open("data.json", "w", encoding="utf-8") as f:
+            json.dump(self.cache_data, f, ensure_ascii=False, indent=4)
 
