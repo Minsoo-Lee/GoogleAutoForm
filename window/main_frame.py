@@ -59,6 +59,8 @@ class MainFrame(wx.Frame):
 
         # CacheManager
         self.cache_manager = CacheManager()
+        # 수정
+        self.cache_data = self.cache_manager.upload_data_from_external()
 
         # QAItems
         self.qa_items = QAItem()
@@ -198,6 +200,10 @@ class MainFrame(wx.Frame):
         # 질문 + 정답 섹션 조립
         body_frame.assemble_body(qa_item[1], qa_item[2], button_sizer, execute_button_sizer)
 
+        # 수정 - 캐시 데이터 업로드
+        # 이건 콤보박스만 하는거고, 쭉 돌면서 문항 타입 확인 후 꺼내기 (단답형, 라디오, 그리드라디오)
+        self.set_cache_data(qa_type, body_frame)
+
         # body_panel 추가
         self.panel_sizer.Add(body_panel, 1, wx.EXPAND | wx.ALL, 5)
 
@@ -261,6 +267,7 @@ class MainFrame(wx.Frame):
 
     def on_execute_button_clicked(self, event):
         def process_form():
+            self.cache_manager.download_data_to_external()
             for i in range(self.form_data.get_count()):
                 self.prior_items.get_prior_result()
                 self.prior_items.print_prior_result()
@@ -402,6 +409,7 @@ class MainFrame(wx.Frame):
         self.prior_items.add_prior_list(self.body_list[self.index].save_prior_list())
         # 수정
         self.cache_manager.save_data_internal(self.index, self.body_list[self.index].save_prior_list())
+
         self.index += 1
 
         # 수정
@@ -444,3 +452,11 @@ class MainFrame(wx.Frame):
         self.Destroy()  # 프레임 제거
         self.webdriver.quit_chrome()
         wx.GetApp().ExitMainLoop()  # 메인 루프 종료 -> 프로세스 종료
+
+    def set_cache_data(self, qa_type, body_frame):
+        if qa_type == AnswerType.SHORT_INVIT:
+            pass
+        elif qa_type == AnswerType.RADIO or qa_type == AnswerType.GRID_RADIO:
+            # 이거 실제로 반영되는지도 체크
+            for combo in body_frame.combo_list:
+                combo.SetValue(self.cache_data[self.index])
