@@ -173,20 +173,14 @@ class TaskManager:
 
     def short_invitation_options(self, question, title):
         child_elements = question.find_elements(By.CSS_SELECTOR, '.whsOnd.zHQkBf')
-        print(f"self.prior_index: {self.prior_index}")
-        print(f"self.prior_length: {len(self.prior_result)}")
         answer_text = self.prior_result[self.prior_index][1]
-        print(self.prior_result[self.prior_index])
 
         # 찾은 하위 요소들에 대해 원하는 작업을 수행합니다.
         if not child_elements:
             return -1
 
-        print(child_elements)
-
         if self.is_phone_needed:
             child_elements[0].send_keys(answer_text)
-        print("done")
         self.is_phone_needed = True
         self.prior_index += 1
         return 1
