@@ -453,4 +453,7 @@ class MainFrame(wx.Frame):
         wx.GetApp().ExitMainLoop()  # 메인 루프 종료 -> 프로세스 종료
 
     def set_cache_data(self):
-        self.body_list[self.index].set_cache_data(self.cache_data[str(self.index)][0])
+        try:
+            self.body_list[self.index].set_cache_data(self.cache_data[str(self.index)][0])
+        except:
+            pass
