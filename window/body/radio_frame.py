@@ -71,7 +71,7 @@ class RadioFrame(BodyFrame):
 
     def set_cache_data(self, cache_data):
         for idx in range(len(self.combo_list)):
-            self.combo_list[idx].SetValue(cache_data[idx])
+            self.combo_list[idx].SetValue(str(cache_data[idx]))
 
 class Radio2Frame(BodyFrame):
     def set_cache_data(self, cache_data):

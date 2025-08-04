@@ -99,8 +99,8 @@ class ShortInvitFrame(BodyFrame):
         return self.type
 
     def set_cache_data(self, cache_data):
-        if len(cache_data) < 2:
+        if len(cache_data) > 3:
             return
-        self.min_input.SetValue(cache_data[0])
-        self.max_input.SetValue(cache_data[1])
+        self.min_input.SetValue(str(cache_data[0]))
+        self.max_input.SetValue(str(cache_data[1]))
 

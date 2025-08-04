@@ -51,8 +51,6 @@ class CacheManager:
             # key를 숫자로 변환 (필요하면)
             # self.cache_data = {int(k): v for k, v in loaded.items()}
 
-        print(self.cache_data)
-
     def is_cache_init(self):
         if not os.path.exists(self._cache_file):
             return False

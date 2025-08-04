@@ -68,4 +68,4 @@ class GridRadioFrame(BodyFrame):
     def set_cache_data(self, cache_data):
         for idx in range(len(self.combo_list)):
             for idx2 in range(len(self.combo_list[idx])):
-                self.combo_list[idx][idx2].SetValue(cache_data[idx][idx2])
+                self.combo_list[idx][idx2].SetValue(str(cache_data[idx][idx2]))

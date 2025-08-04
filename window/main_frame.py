@@ -272,7 +272,6 @@ class MainFrame(wx.Frame):
 
     def on_execute_button_clicked(self, event):
         def process_form():
-            self.cache_manager.print_cache_data()
             self.cache_manager.download_data_to_external()
             for i in range(self.form_data.get_count()):
                 print(f"{i} 번째 작업 수행중")
