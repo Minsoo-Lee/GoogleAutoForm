@@ -31,6 +31,7 @@ class WebDriver:
         chrome_options.add_argument("--disable-gpu")  # GPU 가속을 비활성화합니다. 일부 시스템에서 필요할 수 있습니다.
         chrome_options.add_argument("--no-sandbox")  # 샌드박스 비활성화. 일부 시스템에서 필요할 수 있습니다.
         chrome_options.add_argument("--disable-dev-shm-usage")  # /dev/shm 파티션 사용 안함
+        chrome_options.add_argument("--log-level=OFF")
 
         self.driver = webdriver.Chrome(options=chrome_options)
         WebDriver._initialized = True
