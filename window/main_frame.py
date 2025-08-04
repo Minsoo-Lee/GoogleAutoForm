@@ -133,10 +133,9 @@ class MainFrame(wx.Frame):
 
     # Binding 함수
     def on_prepare_button_clicked(self, event):
+        print("문항을 수집합니다.")
         if self.form_data.set_data(self.elements.get_url_text_value(), self.elements.get_count_text_value()) == -1:
             return
-        print(f"url : {self.form_data.get_url()}")
-        print(f"count : {self.form_data.get_count()}")
         self.prepare_button.Enable(False),
         def process_form():
             self.webdriver.init_chrome()
