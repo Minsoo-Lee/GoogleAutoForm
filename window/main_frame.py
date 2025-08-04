@@ -311,7 +311,7 @@ class MainFrame(wx.Frame):
 
                 finally:
                     # 어떤 경우든 드라이버 정리 및 상태 초기화
-                    self.webdriver.driver.quit()
+                    # self.webdriver.driver.quit()
                     self.prior_items.init_prior_items()
                     self.task_manager.init_prior_index()
                     print(f"{i} 번째 작업 수행 완료")
