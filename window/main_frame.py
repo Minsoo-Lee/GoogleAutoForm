@@ -275,6 +275,7 @@ class MainFrame(wx.Frame):
             self.cache_manager.print_cache_data()
             self.cache_manager.download_data_to_external()
             for i in range(self.form_data.get_count()):
+                print(f"{i} 번째 작업 수행중")
                 self.prior_items.get_prior_result()
                 # self.prior_items.print_prior_result()
                 self.webdriver.init_chrome()
@@ -320,6 +321,7 @@ class MainFrame(wx.Frame):
                     self.webdriver.driver.quit()
                     self.prior_items.init_prior_items()
                     self.task_manager.init_prior_index()
+                    print(f"{i} 번째 작업 수행 완료")
 
         threading.Thread(target=process_form, daemon=True).start()
         self.webdriver.driver.quit()
@@ -458,4 +460,4 @@ class MainFrame(wx.Frame):
         wx.GetApp().ExitMainLoop()  # 메인 루프 종료 -> 프로세스 종료
 
     def set_cache_data(self):
-        self.body_list[self.index].set_cache_data(self.cache_data[str(self.index)])
+        self.body_list[self.index].set_cache_data(self.cache_data[str(self.index)][0])
