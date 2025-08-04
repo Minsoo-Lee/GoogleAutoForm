@@ -326,7 +326,10 @@ class MainFrame(wx.Frame):
         if self.index == 0:
             self.prev_button.Enable(False)
         self.add_prev_body()
-        del self.body_list[self.index + 1]
+        try:
+            del self.body_list[self.index + 1]
+        except:
+            pass
 
     def add_prev_body(self):
         if self.body_panel_item is not None:
@@ -425,6 +428,7 @@ class MainFrame(wx.Frame):
             self.execute_button.Enable(True)
             self.next_button.Enable(False)
             wx.MessageBox("마지막 문항입니다.", "알림", wx.OK | wx.ICON_ASTERISK)
+            self.index -= 1
             return
 
         # 다음 질문 인덱스
