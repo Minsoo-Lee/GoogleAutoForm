@@ -171,10 +171,6 @@ class MainFrame(wx.Frame):
                 print(f"form 처리 중 예외 발생: {e}")
                 # 드라이버는 여전히 종료하고, 다음 반복으로 넘어감
 
-            finally:
-                # 어떤 경우든 드라이버 정리 및 상태 초기화
-                self.webdriver.driver.quit()
-
         threading.Thread(target=process_form, daemon=True).start()
 
     def add_body(self):
@@ -275,7 +271,7 @@ class MainFrame(wx.Frame):
                 print(f"{i} 번째 작업 수행중")
                 self.prior_items.get_prior_result()
                 # self.prior_items.print_prior_result()
-                self.webdriver.init_chrome()
+                # self.webdriver.init_chrome()
                 form_url = self.form_data.get_url()
                 try:
                     self.webdriver.enter_url(form_url)
@@ -321,7 +317,7 @@ class MainFrame(wx.Frame):
                     print(f"{i} 번째 작업 수행 완료")
 
         threading.Thread(target=process_form, daemon=True).start()
-        self.webdriver.driver.quit()
+        # self.webdriver.driver.quit()
 
     def on_prev_body_button_clicked(self, event):
         self.index -= 1

@@ -40,9 +40,7 @@ class WebDriver:
         try:
             time.sleep(2)
             self.driver.find_element(By.XPATH, xpath).click()
-            print("button O")
         except:
-            print("button X")
             return
 
 
