@@ -79,14 +79,8 @@ class ShortInvitFrame(BodyFrame):
             result.append(value)
         # 핸드폰 번호 무작위로 생성하여 삽입
         else:
-            def generate_phone():
-                mid = str(random.randint(0, 9999)).zfill(4)  # 중간번호 4자리
-                last = str(random.randint(0, 9999)).zfill(4)  # 끝번호 4자리
-                return f"010-{mid}-{last}"
             if not is_cache:
                 result.append(ShortInvitType.PHONE)
-            phone_num = generate_phone()
-            result.append(phone_num)
         return result
 
     def get_min_value(self):

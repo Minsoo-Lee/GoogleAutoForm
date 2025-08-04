@@ -77,7 +77,11 @@ class PriorItem:
             value = random.randint(min_val, max_val)
             self.prior_result.append([AnswerType.RADIO, value])
         else:
-            value = item[2]
+            def generate_phone():
+                mid = str(random.randint(0, 9999)).zfill(4)  # 중간번호 4자리
+                last = str(random.randint(0, 9999)).zfill(4)  # 끝번호 4자리
+                return f"010-{mid}-{last}"
+            value = generate_phone()
             self.prior_result.append([AnswerType.RADIO, value])
 
     def get_prior_result_grid(self, item):
