@@ -44,6 +44,7 @@ class ShortInvitFrame(BodyFrame):
 
         self.min_input = min_input
         self.max_input = max_input
+        self.input_list = [self.min_input, self.max_input]
 
         # 원래 answer_sizer에 추가
         self.answer_sizer.Add(hbox, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 5)
@@ -67,20 +68,23 @@ class ShortInvitFrame(BodyFrame):
 
         self.answer_sizer.Add(hbox, 0, wx.EXPAND | wx.ALL, 5)
 
-    def save_prior_list(self):
+    def save_prior_list(self, is_cache=False):
         result = []
-        result.append(AnswerType.SHORT_INVIT)
+        if not is_cache:
+            result.append(AnswerType.SHORT_INVIT)
         if self.type == ShortInvitType.MIN_MAX:
-            result.append(ShortInvitType.MIN_MAX)
+            if not is_cache:
+                result.append(ShortInvitType.MIN_MAX)
             value = [int(self.min_input.GetValue()), int(self.max_input.GetValue())]
             result.append(value)
-        # 핸드폰 번호 무작위로 생성하여 삽
+        # 핸드폰 번호 무작위로 생성하여 삽입
         else:
             def generate_phone():
                 mid = str(random.randint(0, 9999)).zfill(4)  # 중간번호 4자리
                 last = str(random.randint(0, 9999)).zfill(4)  # 끝번호 4자리
                 return f"010-{mid}-{last}"
-            result.append(ShortInvitType.PHONE)
+            if not is_cache:
+                result.append(ShortInvitType.PHONE)
             phone_num = generate_phone()
             result.append(phone_num)
         return result
@@ -93,4 +97,10 @@ class ShortInvitFrame(BodyFrame):
 
     def get_type(self):
         return self.type
+
+    def set_cache_data(self, cache_data):
+        if len(cache_data) < 2:
+            return
+        self.min_input.SetValue(cache_data[0])
+        self.max_input.SetValue(cache_data[1])
 

@@ -18,6 +18,7 @@ class BodyFrame(ABC):
 
         # Combobox 리스트 => 우선순위 담는데 사용
         self.combo_list = []
+        self.input_list= []
 
         # self.data =
 
@@ -62,4 +63,8 @@ class BodyFrame(ABC):
 
     @abstractmethod
     def save_prior_list(self):
+        pass
+
+    @abstractmethod
+    def set_cache_data(self, cache_data):
         pass

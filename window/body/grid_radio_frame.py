@@ -52,9 +52,10 @@ class GridRadioFrame(BodyFrame):
 
         return self.answer_sizer
 
-    def save_prior_list(self):
+    def save_prior_list(self, is_cache=False):
         result = []
-        result.append(AnswerType.GRID_RADIO)
+        if not is_cache:
+            result.append(AnswerType.GRID_RADIO)
         combo_values = []
         for combos in self.combo_list:
             tmp_list = []
@@ -63,3 +64,8 @@ class GridRadioFrame(BodyFrame):
             combo_values.append(tmp_list)
         result.append(combo_values)
         return result
+
+    def set_cache_data(self, cache_data):
+        for idx in range(len(self.combo_list)):
+            for idx2 in range(len(self.combo_list[idx])):
+                self.combo_list[idx][idx2].SetValue(cache_data[idx][idx2])

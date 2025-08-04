@@ -59,16 +59,24 @@ class RadioFrame(BodyFrame):
 
         return self.answer_sizer
 
-    def save_prior_list(self):
+    def save_prior_list(self, is_cache=False):
         result = []
-        result.append(AnswerType.RADIO)
+        if not is_cache:
+            result.append(AnswerType.RADIO)
         combo_values = []
         for combo in self.combo_list:
             combo_values.append(int(combo.GetValue()))
         result.append(combo_values)
         return result
 
+    def set_cache_data(self, cache_data):
+        for idx in range(len(self.combo_list)):
+            self.combo_list[idx].SetValue(cache_data[idx])
+
 class Radio2Frame(BodyFrame):
+    def set_cache_data(self, cache_data):
+        pass
+
     def __init__(self, parent_panel):
         super().__init__(parent_panel)
         self.text_input = None

@@ -60,7 +60,9 @@ class MainFrame(wx.Frame):
         # CacheManager
         self.cache_manager = CacheManager()
         # 수정
-        self.cache_data = self.cache_manager.upload_data_from_external()
+        self.cache_manager.upload_data_from_external()
+        self.cache_data = self.cache_manager.get_cache_data()
+        print(self.cache_data)
 
         # QAItems
         self.qa_items = QAItem()
@@ -200,9 +202,7 @@ class MainFrame(wx.Frame):
         # 질문 + 정답 섹션 조립
         body_frame.assemble_body(qa_item[1], qa_item[2], button_sizer, execute_button_sizer)
 
-        # 수정 - 캐시 데이터 업로드
-        # 이건 콤보박스만 하는거고, 쭉 돌면서 문항 타입 확인 후 꺼내기 (단답형, 라디오, 그리드라디오)
-        self.set_cache_data(qa_type, body_frame)
+
 
         # body_panel 추가
         self.panel_sizer.Add(body_panel, 1, wx.EXPAND | wx.ALL, 5)
@@ -210,6 +210,11 @@ class MainFrame(wx.Frame):
         self.body_panel_item = body_panel
 
         self.body_list.append(body_frame)
+
+        # 수정 - 캐시 데이터 업로드
+        # 이건 콤보박스만 하는거고, 쭉 돌면서 문항 타입 확인 후 꺼내기 (단답형, 라디오, 그리드라디오)
+        if self.cache_manager.is_cache_init():
+            self.set_cache_data()
 
         self.panel.SetSizer(self.panel_sizer)
         self.panel.Layout()
@@ -267,10 +272,11 @@ class MainFrame(wx.Frame):
 
     def on_execute_button_clicked(self, event):
         def process_form():
+            self.cache_manager.print_cache_data()
             self.cache_manager.download_data_to_external()
             for i in range(self.form_data.get_count()):
                 self.prior_items.get_prior_result()
-                self.prior_items.print_prior_result()
+                # self.prior_items.print_prior_result()
                 self.webdriver.init_chrome()
                 form_url = self.form_data.get_url()
                 try:
@@ -350,65 +356,72 @@ class MainFrame(wx.Frame):
         #             and self.body_list[self.index].get_type() == ShortInvitType.MIN_MAX:
         #         min_val = self.body_list[self.index].get_min_value()
         #         max_val = self.body_list[self.index].get_max_value()
-
+        #
         #         # 1) 비어있는지 확인
         #         if not min_val or not max_val:
         #             wx.MessageBox("최소값과 최대값을 모두 입력해주세요.", "오류", wx.OK | wx.ICON_ERROR)
         #             return
-
+        #
         #         # 2) 숫자인지 확인
         #         if not (min_val.isdigit() and max_val.isdigit()):
         #             wx.MessageBox("최소값과 최대값은 정수만 입력할 수 있습니다.", "오류", wx.OK | wx.ICON_ERROR)
         #             return
-
+        #
         #         # 3) 정수 변환
         #         min_val = int(min_val)
         #         max_val = int(max_val)
-
+        #
         #         # 4) 최소값 < 최대값 조건 확인
         #         if min_val >= max_val:
         #             wx.MessageBox("최소값은 최대값보다 작아야 합니다.", "오류", wx.OK | wx.ICON_ERROR)
         #             return
-
+        #
         #     # prior_items에 현재 우선순위 저장
         #     self.prior_items.add_prior_list(self.body_list[self.index].save_prior_list())
+        #     self.cache_manager.save_data_internal(self.index, self.body_list[self.index].save_prior_list(True))
+        #
         #     self.index += 1
-
-        #     if self.index >= self.qa_items.get_qa_length():
-        #         wx.MessageBox("마지막 질문입니다.", "알림", wx.OK | wx.ICON_INFORMATION)
+        #
+        #     # 수정
+        #     if self.index == self.qa_items.get_qa_length():
+        #         self.execute_button.Enable(True)
+        #         self.next_button.Enable(False)
+        #         wx.MessageBox("마지막 문항입니다.", "알림", wx.OK | wx.ICON_ASTERISK)
         #         return
-
+        #
         #     # 다음 질문 인덱스
         #     self.add_body()  # 다시 호출
+
+        # ==========================================================================================
 
         if self.qa_items.get_qa_index(self.index)[0] == AnswerType.SHORT_INVIT\
                 and self.body_list[self.index].get_type() == ShortInvitType.MIN_MAX:
             min_val = self.body_list[self.index].get_min_value()
             max_val = self.body_list[self.index].get_max_value()
-        
+
             # 1) 비어있는지 확인
             if not min_val or not max_val:
                 wx.MessageBox("최소값과 최대값을 모두 입력해주세요.", "오류", wx.OK | wx.ICON_ERROR)
                 return
-        
+
             # 2) 숫자인지 확인
             if not (min_val.isdigit() and max_val.isdigit()):
                 wx.MessageBox("최소값과 최대값은 정수만 입력할 수 있습니다.", "오류", wx.OK | wx.ICON_ERROR)
                 return
-        
+
             # 3) 정수 변환
             min_val = int(min_val)
             max_val = int(max_val)
-        
+
             # 4) 최소값 < 최대값 조건 확인
             if min_val >= max_val:
                 wx.MessageBox("최소값은 최대값보다 작아야 합니다.", "오류", wx.OK | wx.ICON_ERROR)
                 return
-        
+
         # prior_items에 현재 우선순위 저장
         self.prior_items.add_prior_list(self.body_list[self.index].save_prior_list())
         # 수정
-        self.cache_manager.save_data_internal(self.index, self.body_list[self.index].save_prior_list())
+        self.cache_manager.save_data_internal(self.index, self.body_list[self.index].save_prior_list(True))
 
         self.index += 1
 
@@ -418,20 +431,11 @@ class MainFrame(wx.Frame):
             self.next_button.Enable(False)
             wx.MessageBox("마지막 문항입니다.", "알림", wx.OK | wx.ICON_ASTERISK)
             return
-        
+
         # 다음 질문 인덱스
         self.add_body()  # 다시 호출
 
     def click_submit_button(self):
-        # button_list = self.webdriver.get_elements_by_css(None, ".uArJ5e.UQuaGc.YhQJj.zo8FOc.ctEux")
-        # time.sleep(3)
-        # for button in button_list:
-        #     spans = self.webdriver.get_elements_by_css(button, '.NPEfkd.RveJvd.snByac')
-        #     for span in spans:
-        #         if span.text == "제출":
-        #             print("버튼 찾음")
-        #             button.click()
-
         self.webdriver.click_element_by_xpath("/html/body/div/div[2]/form/div[2]/div/div[3]/div[1]/div[1]/div[2]")
 
     def click_next_button_prepare(self):
@@ -453,10 +457,5 @@ class MainFrame(wx.Frame):
         self.webdriver.quit_chrome()
         wx.GetApp().ExitMainLoop()  # 메인 루프 종료 -> 프로세스 종료
 
-    def set_cache_data(self, qa_type, body_frame):
-        if qa_type == AnswerType.SHORT_INVIT:
-            pass
-        elif qa_type == AnswerType.RADIO or qa_type == AnswerType.GRID_RADIO:
-            # 이거 실제로 반영되는지도 체크
-            for combo in body_frame.combo_list:
-                combo.SetValue(self.cache_data[self.index])
+    def set_cache_data(self):
+        self.body_list[self.index].set_cache_data(self.cache_data[str(self.index)])

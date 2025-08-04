@@ -12,7 +12,7 @@ from web.webdriver import WebDriver
 class CacheManager:
     _instance = None
     _initialized = False
-    _cache_dir = r"C:\google_cache"
+    _cache_dir = r"/Users/minsoo/cache"
     _cache_file = os.path.join(_cache_dir, ".cache")
 
     def __new__(cls):
@@ -51,3 +51,15 @@ class CacheManager:
             # key를 숫자로 변환 (필요하면)
             # self.cache_data = {int(k): v for k, v in loaded.items()}
 
+        print(self.cache_data)
+
+    def is_cache_init(self):
+        if not os.path.exists(self._cache_file):
+            return False
+        return True
+
+    def print_cache_data(self):
+        print(self.cache_data)
+
+    def get_cache_data(self):
+        return self.cache_data
