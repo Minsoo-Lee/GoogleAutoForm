@@ -12,7 +12,7 @@ from web.webdriver import WebDriver
 class CacheManager:
     _instance = None
     _initialized = False
-    _cache_dir = r"/Users/minsoo/cache"
+    _cache_dir = r"C:/cache"
     _cache_file = os.path.join(_cache_dir, ".cache")
 
     def __new__(cls):
