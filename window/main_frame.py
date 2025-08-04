@@ -62,7 +62,6 @@ class MainFrame(wx.Frame):
         # 수정
         self.cache_manager.upload_data_from_external()
         self.cache_data = self.cache_manager.get_cache_data()
-        print(self.cache_data)
 
         # QAItems
         self.qa_items = QAItem()
